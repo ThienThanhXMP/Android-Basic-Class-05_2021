@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Day003ConstraintLayout</string>
+    <string name="text1">1</string>
+    <string name="text2">2</string>
+    <string name="text4">4</string>
+    <string name="text3">3</string>
+    <string name="text5">5</string>
+    <string name="text6">6</string>
+    <string name="text7">7</string>
+    <string name="text8">8</string>
+    <string name="text_phone_title">Phone</string>
+    <string name="text_phone_number">Phone number</string>
+    <string name="text_password">Password</string>
+    <string name="text_login">login</string>
+</resources>
