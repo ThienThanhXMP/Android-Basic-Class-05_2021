@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">day005</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_item_btn">Add</string>
+    <string name="enter_item">Enter item</string>
+    <string name="data_form">Data Form</string>
+    <string name="enter_data">Enter data</string>
+    <string name="send_data_btn">Send</string>
+    <string name="switch_content_fragment">Switch Content Fragment</string>
+    <string name="content_title">Hello User!</string>
+    <string name="content_data">Data from HomeFragment:</string>
+    <string name="switch_home_fragment">Switch Home Fragment</string>
+    <string name="empty_list">Empty List, Please Insert!</string>
+    <string name="send_form">Send Form</string>
+    <string name="add_items">Add Items</string>
+    <string name="send_data">Send Data</string>
+    <string name="recyclerview">RecyclerView</string>
+</resources>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ContentFragment">
+
+    <TextView
+        android:id="@+id/add_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_items"
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/add_item_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_item"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/add_item_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_item_btn" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/add_item_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_12"
+        app:constraint_referenced_ids="add_item_title, add_item_input, add_item_btn"
+        app:flow_horizontalGap="@dimen/dp_8"
+        app:layout_constraintBottom_toTopOf="@id/send_data_part"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/send_data_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send_data"
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/send_data_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_data"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/send_data_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send_data_btn" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/send_data_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_12"
+        app:constraint_referenced_ids="send_data_title,send_data_input,send_data_btn"
+        app:flow_horizontalGap="@dimen/dp_8"
+        app:layout_constraintBottom_toTopOf="@id/switch_content_btn"
+        app:layout_constraintTop_toBottomOf="@id/add_item_part" />
+
+    <Button
+        android:id="@+id/switch_content_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_content_fragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/send_data_part" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
