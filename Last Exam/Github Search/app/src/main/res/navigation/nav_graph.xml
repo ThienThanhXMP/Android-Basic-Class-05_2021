@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/profile_fragment">
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="com.thanhthienxmp.githubsearch.fragment.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/profile_fragment">
+        <action
+            android:id="@+id/startProfile"
+            app:destination="@id/profile_fragment">
+            <argument
+                android:name="gitAccount"
+                android:defaultValue="toanmobile"
+                app:argType="string"/>
+            <argument
+                android:name="checkStack"
+                android:defaultValue="false"
+                app:argType="boolean"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/announce_fragment"
+        android:name="com.thanhthienxmp.githubsearch.fragment.AnnounceFragment"
+        android:label="Announce"
+        tools:layout="@layout/announce_fragment" />
+</navigation>
