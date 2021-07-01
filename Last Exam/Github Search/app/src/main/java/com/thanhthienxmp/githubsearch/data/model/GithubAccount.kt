@@ -2,94 +2,49 @@ package com.thanhthienxmp.githubsearch.data.model
 
 
 import androidx.room.*
-import com.google.gson.annotations.SerializedName
 
 @Entity
 data class GithubAccount(
-    @SerializedName("avatar_url")
-    var avatarUrl: String? = "", // https://avatars.githubusercontent.com/u/6941388?v=4
-    @SerializedName("bio")
+    var avatar_url: String? = "", // https://avatars.githubusercontent.com/u/6941388?v=4
     var bio: String? = "", // - Senior Android (Kotlin and Java). - Cross platform: Flutter (Dart) and React Native (Javascript).
-    @SerializedName("blog")
     var blog: String? = "",
-    @SerializedName("company")
     var company: String? = "", // Netacom
-    @SerializedName("created_at")
-    var createdAt: String? = "", // 2014-03-13T13:32:45Z
-    @SerializedName("email")
+    var created_at: String? = "", // 2014-03-13T13:32:45Z
     var email: String? = "", // null
-    @SerializedName("events_url")
-    var eventsUrl: String? = "", // https://api.github.com/users/ToanMobile/events{/privacy}
-    @SerializedName("followers")
-    var followers: Int? = 0, // 40
-    @SerializedName("followers_url")
-    var followersUrl: String? = "", // https://api.github.com/users/ToanMobile/followers
-    @SerializedName("following")
+    var events_url: String? = "", // https://api.github.com/users/ToanMobile/events{/privacy}
+    var followers: Int? = 0, // 39
+    var followers_url: String? = "", // https://api.github.com/users/ToanMobile/followers
     var following: Int? = 0, // 34
-    @SerializedName("following_url")
-    var followingUrl: String? = "", // https://api.github.com/users/ToanMobile/following{/other_user}
-    @SerializedName("gists_url")
-    var gistsUrl: String? = "", // https://api.github.com/users/ToanMobile/gists{/gist_id}
-    @SerializedName("gravatar_id")
-    var gravatarId: String? = "",
-    @SerializedName("hireable")
+    var following_url: String? = "", // https://api.github.com/users/ToanMobile/following{/other_user}
+    var gists_url: String? = "", // https://api.github.com/users/ToanMobile/gists{/gist_id}
+    var gravatar_id: String? = "",
     var hireable: String? = "", // null
-    @SerializedName("html_url")
-    var htmlUrl: String? = "", // https://github.com/ToanMobile
-    @SerializedName("id")
+    var html_url: String? = "", // https://github.com/ToanMobile
     var id: Int? = 0, // 6941388
-    @SerializedName("location")
     var location: String? = "", // HCM, Viet Nam.
-    @SerializedName("login")
     @PrimaryKey
     var login: String = "", // ToanMobile
-    @SerializedName("name")
     var name: String? = "", // Huỳnh Văn Toàn
-    @SerializedName("node_id")
-    var nodeId: String? = "", // MDQ6VXNlcjY5NDEzODg=
-    @SerializedName("organizations_url")
-    var organizationsUrl: String? = "", // https://api.github.com/users/ToanMobile/orgs
-    @SerializedName("public_gists")
-    var publicGists: Int? = 0, // 5
-    @SerializedName("public_repos")
-    var publicRepos: Int? = 0, // 53
-    @SerializedName("received_events_url")
-    var receivedEventsUrl: String? = "", // https://api.github.com/users/ToanMobile/received_events
-    @SerializedName("repos_url")
-    var reposUrl: String? = "", // https://api.github.com/users/ToanMobile/repos
-    @SerializedName("site_admin")
-    var siteAdmin: Boolean? = false, // false
-    @SerializedName("starred_url")
-    var starredUrl: String? = "", // https://api.github.com/users/ToanMobile/starred{/owner}{/repo}
-    @SerializedName("subscriptions_url")
-    var subscriptionsUrl: String? = "", // https://api.github.com/users/ToanMobile/subscriptions
-    @SerializedName("twitter_username")
-    var twitterUsername: String? = "", // null
-    @SerializedName("type")
+    var node_id: String? = "", // MDQ6VXNlcjY5NDEzODg=
+    var organizations_url: String? = "", // https://api.github.com/users/ToanMobile/orgs
+    var public_gists: Int? = 0, // 5
+    var public_repos: Int? = 0, // 53
+    var received_events_url: String? = "", // https://api.github.com/users/ToanMobile/received_events
+    var repos_url: String? = "", // https://api.github.com/users/ToanMobile/repos
+    var site_admin: Boolean? = false, // false
+    var starred_url: String? = "", // https://api.github.com/users/ToanMobile/starred{/owner}{/repo}
+    var subscriptions_url: String? = "", // https://api.github.com/users/ToanMobile/subscriptions
+    var twitter_username: String? = "", // null
     var type: String? = "", // User
-    @SerializedName("updated_at")
-    var updatedAt: String? = "", // 2021-06-24T02:37:20Z
-    @SerializedName("url")
-    var url: String? = "", // https://api.github.com/users/ToanMobile
-) {
-    @Ignore
-    val listFollower: GitFollow? = null
-
-    @Ignore
-    val listFollowing: GitFollow? = null
-}
+    var updated_at: String? = "", // 2021-07-01T13:55:04Z
+    var url: String? = "" // https://api.github.com/users/ToanMobile
+)
 
 @Entity
 class GitFollowAccount(
     @PrimaryKey
-    var login: String = "",
-    var followLogin: String? = "",
-    var avatar: String? = ""
+    var git: String = "",
+    var followLogin: String = "",
+    var avatar: String? = "",
+    var isFollower: Boolean = false
 )
-
-@Entity(primaryKeys = ["login", "followLogin"])
-class UserWithFollowAccount(
-    val login: String,
-    val followLogin: String?,
-)
-

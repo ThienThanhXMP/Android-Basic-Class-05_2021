@@ -11,36 +11,44 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.thanhthienxmp.githubsearch.MainActivity
 import com.thanhthienxmp.githubsearch.R
-import com.thanhthienxmp.githubsearch.data.model.GitFollow
+import com.thanhthienxmp.githubsearch.data.model.GitFollowAccount
 import com.thanhthienxmp.githubsearch.data.utils.GlideApp
+import com.thanhthienxmp.githubsearch.databinding.ProfileFragmentFollowItemBinding
 
 abstract class GithubFollowAccountAdapter(
-    private val list: GitFollow,
+    private val list: MutableList<GitFollowAccount>,
     private var reverse: Boolean
 ) :
     RecyclerView.Adapter<GithubFollowAccountAdapter.ViewHolder>() {
     private var lastPosition = -1
+    private var binding: ProfileFragmentFollowItemBinding? = null
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val avatar: ImageView = view.findViewById(R.id.follow_avatar)
-        val loginName: TextView = view.findViewById(R.id.follow_login)
-        val layout: View = view.findViewById(R.id.follow_item)
+    class ViewHolder(view: ProfileFragmentFollowItemBinding) : RecyclerView.ViewHolder(view.root) {
+        val avatar: ImageView = view.followAvatar
+        val loginName: TextView = view.followLogin
+        val layout: View = view.followItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.profile_fragment_follow_item, parent, false)
-        return ViewHolder(view)
+        binding =
+            ProfileFragmentFollowItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        return ViewHolder(binding!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.itemView.context
         val formatList = if (reverse) list.reversed() else list
-        val image = formatList[position].avatar
-        val name = formatList[position].followLogin
+        val git = formatList[position]
+        val image = git.avatar
+        val name = if (git.isFollower) git.git else git.git.split("#F").first()
         if (position % 2 != 0) holder.layout.setBackgroundColor(Color.parseColor("#eeffee"))
         else holder.layout.setBackgroundColor(Color.parseColor("#ffffff"))
-        // Show image
+        // Show imagemvx
+
         GlideApp.with(context).load(image).into(holder.avatar)
         holder.loginName.text = name
         // Set animation
@@ -50,14 +58,18 @@ abstract class GithubFollowAccountAdapter(
             holder.itemView.startAnimation(animation)
             lastPosition = holder.adapterPosition
         }
-        holder.itemView.setOnLongClickListener {
+        holder.itemView.setOnClickListener {
             val activity = (context as MainActivity)
             if (activity.isStacked) {
                 Toast.makeText(activity, "Can\'t interact in stacked player", Toast.LENGTH_SHORT)
                     .show()
             }
-            true
         }
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        binding = null
     }
 
     override fun getItemCount(): Int = list.size

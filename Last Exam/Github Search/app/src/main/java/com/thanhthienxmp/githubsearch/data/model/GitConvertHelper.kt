@@ -3,11 +3,11 @@ package com.thanhthienxmp.githubsearch.data.model
 class GitConvertHelper {
     fun crtToListFollowAccount(
         login: String,
-        git: GithubFollowAccount?
-    ): GitFollow {
-        val list = GitFollow()
+        git: MutableList<GithubAccount>?
+    ): MutableList<GitFollowAccount> {
+        val list: MutableList<GitFollowAccount> = mutableListOf()
         git?.map {
-            list.add(GitFollowAccount(login, it.login, it.avatarUrl))
+            list.add(GitFollowAccount(it.login, login, it.avatar_url))
         }
         return list
     }

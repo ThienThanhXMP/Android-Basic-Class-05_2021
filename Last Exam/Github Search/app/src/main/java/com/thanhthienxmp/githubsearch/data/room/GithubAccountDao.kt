@@ -4,42 +4,39 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.thanhthienxmp.githubsearch.data.model.GitFollow
+import com.thanhthienxmp.githubsearch.data.model.GitFollowAccount
 import com.thanhthienxmp.githubsearch.data.model.GithubAccount
 
 @Dao
 abstract class GithubAccountDao {
-    fun insertFollower(git: GithubAccount, list: GitFollow) {
+    fun insertFollower(login: String, list: MutableList<GitFollowAccount>, isFollower: Boolean) {
         for (follower in list) {
-            follower.login = git.login
+            follower.apply {
+                this.git = if (isFollower) follower.git else follower.git.plus("#F")
+                this.followLogin = login
+                this.isFollower = isFollower
+            }
         }
-        bInsertFollower(list)
+        bInsertFollow(list)
     }
 
-    fun insertFollowing(git: GithubAccount, list: GitFollow) {
-        for (following in list) {
-            following.login = git.login
-        }
-        bInsertFollowing(list)
-    }
+    fun insertGit(git: GithubAccount) = bInsertGit(git)
 
-    fun insertGitWithFollow(git: GithubAccount) {
-        git.listFollower?.let { insertFollower(git, git.listFollower) }
-        git.listFollowing?.let { insertFollowing(git, git.listFollowing) }
-        bInsertGit(git)
-    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun bInsertGit(git: GithubAccount)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun bInsertFollower(follower: GitFollow)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun bInsertFollowing(following: GitFollow)
+    abstract fun bInsertFollow(follower: MutableList<GitFollowAccount>)
 
     @Query("SELECT * FROM GithubAccount WHERE login = :gitLogin")
     abstract fun bGetAccount(gitLogin: String): GithubAccount
+
+    @Query("SELECT * FROM GitFollowAccount WHERE followLogin = :gitLogin AND isFollower = 1")
+    abstract fun bGetFollowerAccount(gitLogin: String): MutableList<GitFollowAccount>
+
+    @Query("SELECT * FROM GitFollowAccount WHERE followLogin = :gitLogin AND isFollower = 0")
+    abstract fun bGetFollowingAccount(gitLogin: String): MutableList<GitFollowAccount>
 
     @Query("DELETE FROM GithubAccount WHERE login = :gitLogin")
     abstract fun bDeleteAccount(gitLogin: String)

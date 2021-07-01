@@ -1,7 +1,6 @@
 package com.thanhthienxmp.githubsearch.data.api
 
 import com.thanhthienxmp.githubsearch.data.model.GithubAccount
-import com.thanhthienxmp.githubsearch.data.model.GithubFollowAccount
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,11 +15,11 @@ interface GithubApi {
     suspend fun getUserFollowers(
         @Path("user_id") user_id: String,
         @Query("per_page") per_page: Int
-    ): Response<GithubFollowAccount>
+    ): Response<MutableList<GithubAccount>>
 
     @GET("/users/{user_id}/following")
     suspend fun getUserFollowing(
         @Path("user_id") user_id: String,
         @Query("per_page") per_page: Int
-    ): Response<GithubFollowAccount>
+    ): Response<MutableList<GithubAccount>>
 }

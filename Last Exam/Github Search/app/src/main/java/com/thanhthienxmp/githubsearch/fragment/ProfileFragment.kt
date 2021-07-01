@@ -22,7 +22,6 @@ import com.thanhthienxmp.githubsearch.data.utils.SingleSwipeItemAccessAccount
 import com.thanhthienxmp.githubsearch.databinding.ProfileFragmentBinding
 import com.thanhthienxmp.githubsearch.widget.RecyclerViewEmptySupport
 import kotlinx.coroutines.*
-import retrofit2.HttpException
 import java.util.*
 import kotlin.math.pow
 import kotlin.math.round
@@ -94,88 +93,70 @@ class ProfileFragment : Fragment() {
     private fun displayAccount(login: String) {
         CoroutineScope(Dispatchers.IO).launch {
             // Display Info
+            var isUpdate = false
             var git: GithubAccount? = db.bGetAccount(login)
-            Log.e("TEST", git.toString())
             if (git == null) {
                 val response = githubApi.getUser(login)
-                try {
-                    if (response.isSuccessful) {
-                        git = response.body()
-                    } else {
-                        Log.e(
-                            "Github Account Failed",
-                            response.let { "${it.code()} - ${it.errorBody()}" })
-                    }
-                } catch (er: HttpException) {
-                    Log.e("HttpException", er.toString())
-                } catch (er: Throwable) {
-                    Log.e("Error", er.toString())
+                if (response.isSuccessful) {
+                    git = response.body()
+                    isUpdate = true
+                } else {
+                    Log.e(
+                        "Github Account Failed",
+                        response.let { "${it.code()} - ${it.errorBody()}" })
                 }
             }
             git?.let {
                 withContext(Dispatchers.Main) {
                     setInfoUI(git)
                 }
+                if (isUpdate) db.insertGit(it)
             }
 
             // Display Follow
+            var isFollowUpdate = false
             val followerResponse = githubApi.getUserFollowers(login, 100)
             val followingResponse = githubApi.getUserFollowing(login, 100)
-            var listFollower = git?.listFollower
-            var listFollowing = git?.listFollowing
-            if (listFollower == null || listFollowing == null) {
-                try {
-                    if (followerResponse.isSuccessful) {
-                        listFollower = GitConvertHelper().crtToListFollowAccount(
-                            login,
-                            followerResponse.body()
-                        )
-                        Log.e("LIST FOLLOWER", listFollower.toString())
-                    } else {
-                        Log.e(
+            var listFollower = db.bGetFollowerAccount(login)
+            var listFollowing = db.bGetFollowingAccount(login)
+            if (listFollower.isEmpty() || listFollowing.isEmpty()) {
+                isFollowUpdate = true
+                if (followerResponse.isSuccessful) {
+                    listFollower = GitConvertHelper().crtToListFollowAccount(
+                        login,
+                        followerResponse.body()
+                    )
+                } else {
+                    Log.e(
 
-                            "Github Followers Failed",
-                            followerResponse.let { "${it.code()} - ${it.errorBody()}" })
-                    }
+                        "Github Followers Failed",
+                        followerResponse.let { "${it.code()} - ${it.errorBody()}" })
+                }
 
-                    if (followingResponse.isSuccessful) {
-                        listFollowing = GitConvertHelper().crtToListFollowAccount(
-                            login,
-                            followingResponse.body()
-                        )
-                        Log.e("LIST FOLLOWING", listFollowing.toString())
-                    } else {
-                        Log.e(
-                            "Github Following Failed",
-                            followingResponse.let { "${it.code()} - ${it.errorBody()}" })
-                    }
-
-                } catch (er: HttpException) {
-                    Log.e("HttpException", er.toString())
-                } catch (er: Throwable) {
-                    Log.e("Error", er.toString())
+                if (followingResponse.isSuccessful) {
+                    listFollowing = GitConvertHelper().crtToListFollowAccount(
+                        login,
+                        followingResponse.body()
+                    )
+                } else {
+                    Log.e(
+                        "Github Following Failed",
+                        followingResponse.let { "${it.code()} - ${it.errorBody()}" })
                 }
             }
 
             withContext(Dispatchers.Main) {
                 followerRcy.adapter =
-                    listFollower?.let { GithubFollowerAccountAdapter(it, true) }
+                    GithubFollowerAccountAdapter(listFollower, true)
                 followingRcy.adapter =
-                    listFollowing?.let { GithubFollowingAccountAdapter(it, true) }
+                    GithubFollowingAccountAdapter(listFollowing, true)
             }
 
             // Save git to database
-            try {
-                Log.e("TEST-GIT", git.toString())
-                // Save follower to database
-                if (git != null) {
-                    listFollower?.let { db.insertFollower(git, it) }
-                    // Save following to database
-                    listFollowing?.let { db.insertFollowing(git, it) }
-                    db.insertGitWithFollow(git)
-                }
-            } catch (e: Throwable) {
-                Log.e("Insert Git", e.toString())
+            if (isFollowUpdate) {
+                db.insertFollower(login, listFollower, true)
+                // Save following to database
+                db.insertFollower(login, listFollowing, false)
             }
         }
     }
@@ -188,13 +169,13 @@ class ProfileFragment : Fragment() {
             git?.login?.let { (context as MainActivity).copyTextToClipboard(it) }
         }
         info.userBio.text = git?.bio ?: "Bio Github Search"
-        Glide.with(this@ProfileFragment).load(git?.avatarUrl)
+        Glide.with(this@ProfileFragment).load(git?.avatar_url)
             .into(info.userAvatar)
         info.userFollowers.text =
             getFollowNumber(git?.followers).plus(" Followers")
         info.userFollowing.text =
             getFollowNumber(git?.following).plus(" Following")
-        info.userRepos.text = git?.publicRepos.toString().plus(" Repos")
+        info.userRepos.text = git?.public_repos.toString().plus(" Repos")
     }
 
     private fun getFollowNumber(number: Int?): String {

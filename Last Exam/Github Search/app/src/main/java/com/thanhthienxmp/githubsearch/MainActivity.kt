@@ -42,12 +42,24 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
         val gitEditText = binding.gitEditText
         gitEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH)
-                gitEditText.text?.let { accessAccount(it.toString(), init = true, stack = false) }
+                gitEditText.text?.let {
+                    accessAccount(
+                        it.toString().lowercase(),
+                        init = true,
+                        stack = false
+                    )
+                }
             false
         }
         binding.gitSearchBtn.setOnClickListener {
             gitEditText.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
-            gitEditText.text?.let { accessAccount(it.toString(), init = true, stack = false) }
+            gitEditText.text?.let {
+                accessAccount(
+                    it.toString().lowercase(),
+                    init = true,
+                    stack = false
+                )
+            }
         }
     }
 
