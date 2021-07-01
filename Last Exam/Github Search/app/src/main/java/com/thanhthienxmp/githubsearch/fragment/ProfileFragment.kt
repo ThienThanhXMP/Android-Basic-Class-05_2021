@@ -108,78 +108,7 @@ class ProfileFragment : Fragment() {
         super.onDestroy()
         bindingRoot = null
     }
-
-//    private fun displayAccount(login: String) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            // Display Info
-//            var isUpdate = false
-//            var git: GithubAccount? = db.bGetAccount(login)
-//            if (git == null) {
-//                val response = githubApi.getUser(login)
-//                if (response.isSuccessful) {
-//                    git = response.body()
-//                    isUpdate = true
-//                } else {
-//                    Log.e(
-//                        "Github Account Failed",
-//                        response.let { "${it.code()} - ${it.errorBody()}" })
-//                }
-//            }
-//            git?.let {
-//                withContext(Dispatchers.Main) {
-//                    setInfoUI(git)
-//                }
-//                if (isUpdate) db.insertGit(it)
-//            }
-//
-//            // Display Follow
-//            var isFollowUpdate = false
-//            val followerResponse = githubApi.getUserFollowers(login, 100)
-//            val followingResponse = githubApi.getUserFollowing(login, 100)
-//            var listFollower = db.bGetFollowerAccount(login)
-//            var listFollowing = db.bGetFollowingAccount(login)
-//            if (listFollower.isEmpty() || listFollowing.isEmpty()) {
-//                isFollowUpdate = true
-//                if (followerResponse.isSuccessful) {
-//                    listFollower = GitConvertHelper().crtToListFollowAccount(
-//                        login,
-//                        followerResponse.body()
-//                    )
-//                } else {
-//                    Log.e(
-//
-//                        "Github Followers Failed",
-//                        followerResponse.let { "${it.code()} - ${it.errorBody()}" })
-//                }
-//
-//                if (followingResponse.isSuccessful) {
-//                    listFollowing = GitConvertHelper().crtToListFollowAccount(
-//                        login,
-//                        followingResponse.body()
-//                    )
-//                } else {
-//                    Log.e(
-//                        "Github Following Failed",
-//                        followingResponse.let { "${it.code()} - ${it.errorBody()}" })
-//                }
-//            }
-//
-//            withContext(Dispatchers.Main) {
-//                followerRcy.adapter =
-//                    GithubFollowerAccountAdapter(listFollower, true)
-//                followingRcy.adapter =
-//                    GithubFollowingAccountAdapter(listFollowing, true)
-//            }
-//
-//            // Save git to database
-//            if (isFollowUpdate) {
-//                db.insertFollower(login, listFollower, true)
-//                // Save following to database
-//                db.insertFollower(login, listFollowing, false)
-//            }
-//        }
-//    }
-
+    
     private fun setInfoUI(git: GithubAccount?) {
         val info = binding.info
         info.userName.text = git?.name
