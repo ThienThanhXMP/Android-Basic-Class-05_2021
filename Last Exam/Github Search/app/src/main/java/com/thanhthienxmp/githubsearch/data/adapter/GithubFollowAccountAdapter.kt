@@ -45,12 +45,14 @@ abstract class GithubFollowAccountAdapter(
         val git = formatList[position]
         val image = git.avatar
         val name = if (git.isFollower) git.git else git.git.split("#F").first()
+
         if (position % 2 != 0) holder.layout.setBackgroundColor(Color.parseColor("#eeffee"))
         else holder.layout.setBackgroundColor(Color.parseColor("#ffffff"))
-        // Show imagemvx
 
+        // Show image
         GlideApp.with(context).load(image).into(holder.avatar)
         holder.loginName.text = name
+
         // Set animation
         if (holder.adapterPosition > lastPosition) {
             val animation = AnimationUtils.loadAnimation(context, R.anim.slide_row_item)
