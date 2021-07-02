@@ -108,13 +108,13 @@ class ProfileFragment : Fragment() {
         super.onDestroy()
         bindingRoot = null
     }
-    
+
     private fun setInfoUI(git: GithubAccount?) {
         val info = binding.info
         info.userName.text = git?.name
-        info.userLogin.text = "@".plus(git?.login)
+        info.userLogin.text = "@".plus(git?.loginBias)
         info.userLogin.setOnClickListener {
-            git?.login?.let { (context as MainActivity).copyTextToClipboard(it) }
+            git?.loginBias?.let { (context as MainActivity).copyTextToClipboard(it) }
         }
         info.userBio.text = git?.bio ?: "Bio Github Search"
         Glide.with(this@ProfileFragment).load(git?.avatar_url)

@@ -13,7 +13,7 @@ abstract class GithubAccountDao {
         for (follower in list) {
             follower.apply {
                 this.git = if (isFollower) follower.git else follower.git.plus("#F")
-                this.followLogin = login
+                this.followLogin = login.lowercase()
                 this.isFollower = isFollower
             }
         }
@@ -21,7 +21,6 @@ abstract class GithubAccountDao {
     }
 
     fun insertGit(git: GithubAccount) = bInsertGit(git)
-
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun bInsertGit(git: GithubAccount)

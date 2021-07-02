@@ -13,8 +13,9 @@ import com.thanhthienxmp.githubsearch.data.room.GithubAccountDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
-class GitViewModel(context: Context, private  val db: GithubAccountDao) : ViewModel() {
+class GitViewModel(context: Context, private val db: GithubAccountDao) : ViewModel() {
     private val githubApi: GithubApi = GithubApiService.getService
 
     fun getAccount(login: String, returnGit: (GithubAccount?) -> Unit) {
@@ -23,14 +24,24 @@ class GitViewModel(context: Context, private  val db: GithubAccountDao) : ViewMo
             var isUpdate = false
             var git: GithubAccount? = db.bGetAccount(login)
             if (git == null) {
-                val response = githubApi.getUser(login)
-                if (response.isSuccessful) {
-                    git = response.body()
-                    isUpdate = true
-                } else {
-                    Log.e(
-                        "Github Account Failed",
-                        response.let { "${it.code()} - ${it.errorBody()}" })
+                var response: Response<GithubAccount>? = null
+                try {
+                    response = githubApi.getUser(login)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        git = response.body()?.apply {
+                            this.loginBias = this.login
+                            this.login = this.login.lowercase()
+                        }
+                        isUpdate = true
+                    } else {
+                        Log.e(
+                            "Github Account Failed",
+                            response.let { "${it.code()} - ${it.errorBody()}" })
+                    }
                 }
             }
             git?.let {
@@ -50,33 +61,45 @@ class GitViewModel(context: Context, private  val db: GithubAccountDao) : ViewMo
         viewModelScope.launch(Dispatchers.IO) {
             // Display Follow
             var isFollowUpdate = false
-            val followerResponse = githubApi.getUserFollowers(login, 100)
-            val followingResponse = githubApi.getUserFollowing(login, 100)
             var listFollower = db.bGetFollowerAccount(login)
             var listFollowing = db.bGetFollowingAccount(login)
-            if (listFollower.isEmpty() || listFollowing.isEmpty()) {
+            listFollowing.map {
+                it.git = it.git.split("#F").first()
+            }
+            if (listFollower.isEmpty() && listFollowing.isEmpty()) {
+                var followerResponse: Response<MutableList<GithubAccount>>? = null
+                var followingResponse: Response<MutableList<GithubAccount>>? = null
+                try {
+                    followerResponse = githubApi.getUserFollowers(login, 100)
+                    followingResponse = githubApi.getUserFollowing(login, 100)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 isFollowUpdate = true
-                if (followerResponse.isSuccessful) {
-                    listFollower = GitConvertHelper().crtToListFollowAccount(
-                        login,
-                        followerResponse.body()
-                    )
-                } else {
-                    Log.e(
-
-                        "Github Followers Failed",
-                        followerResponse.let { "${it.code()} - ${it.errorBody()}" })
+                if (followerResponse != null) {
+                    if (followerResponse.isSuccessful) {
+                        listFollower = GitConvertHelper().crtToListFollowAccount(
+                            login,
+                            followerResponse.body()
+                        )
+                    } else {
+                        Log.e(
+                            "Github Followers Failed",
+                            followerResponse.let { "${it.code()} - ${it.errorBody()}" })
+                    }
                 }
 
-                if (followingResponse.isSuccessful) {
-                    listFollowing = GitConvertHelper().crtToListFollowAccount(
-                        login,
-                        followingResponse.body()
-                    )
-                } else {
-                    Log.e(
-                        "Github Following Failed",
-                        followingResponse.let { "${it.code()} - ${it.errorBody()}" })
+                if (followingResponse != null) {
+                    if (followingResponse.isSuccessful) {
+                        listFollowing = GitConvertHelper().crtToListFollowAccount(
+                            login,
+                            followingResponse.body()
+                        )
+                    } else {
+                        Log.e(
+                            "Github Following Failed",
+                            followingResponse.let { "${it.code()} - ${it.errorBody()}" })
+                    }
                 }
             }
 

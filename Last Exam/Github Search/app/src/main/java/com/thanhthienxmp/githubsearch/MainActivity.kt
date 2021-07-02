@@ -1,18 +1,18 @@
 package com.thanhthienxmp.githubsearch
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.*
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.thanhthienxmp.githubsearch.data.utils.GithubAccountAction
+import com.thanhthienxmp.githubsearch.data.utils.NetworkConnection
 import com.thanhthienxmp.githubsearch.databinding.ActivityMainBinding
 import com.thanhthienxmp.githubsearch.fragment.ProfileFragmentDirections
 
@@ -20,8 +20,10 @@ import com.thanhthienxmp.githubsearch.fragment.ProfileFragmentDirections
 class MainActivity : AppCompatActivity(), GithubAccountAction {
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+    private lateinit var networkConnection: NetworkConnection
     var isStacked = false
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -61,6 +63,22 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
                 )
             }
         }
+
+        // Broadcast Receiver
+        networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this, {
+            runOnUiThread {
+                if(it){
+                    binding.toolbarContainer.connectStateIcon.setImageResource(R.drawable.ic_online_state)
+                    binding.toolbarContainer.connectStateText.text =
+                        resources.getText(R.string.network_online_state)
+                }else{
+                    binding.toolbarContainer.connectStateIcon.setImageResource(R.drawable.ic_offline_state)
+                    binding.toolbarContainer.connectStateText.text =
+                        resources.getText(R.string.network_offline_state)
+                }
+            }
+        })
     }
 
     // Click back button on device and back the last layer
@@ -85,12 +103,11 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
 
     // This function to account sub github account
     override fun accessAccount(gitAccount: String?, init: Boolean, stack: Boolean) {
-        Log.e("ACCESS", gitAccount.toString())
         getBackButton(init, stack)
         gitAccount?.let {
             navController.navigate(
                 ProfileFragmentDirections.startProfile(
-                    it, stack
+                    it.lowercase(), stack
                 )
             )
         }

@@ -45,7 +45,6 @@ abstract class GithubFollowAccountAdapter(
         val git = formatList[position]
         val image = git.avatar
         val name = if (git.isFollower) git.git else git.git.split("#F").first()
-
         if (position % 2 != 0) holder.layout.setBackgroundColor(Color.parseColor("#eeffee"))
         else holder.layout.setBackgroundColor(Color.parseColor("#ffffff"))
 

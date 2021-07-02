@@ -23,7 +23,8 @@ data class GithubAccount(
     var id: Int? = 0, // 6941388
     var location: String? = "", // HCM, Viet Nam.
     @PrimaryKey
-    var login: String = "", // ToanMobile
+    var login: String = "", // toanmobile
+    var loginBias: String = "", // ToanMobile
     var name: String? = "", // Huỳnh Văn Toàn
     var node_id: String? = "", // MDQ6VXNlcjY5NDEzODg=
     var organizations_url: String? = "", // https://api.github.com/users/ToanMobile/orgs

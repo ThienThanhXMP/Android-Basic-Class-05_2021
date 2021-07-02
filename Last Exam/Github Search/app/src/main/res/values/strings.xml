@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Github Search</string>
+    <string name="network_online_state">Online</string>
+    <string name="network_offline_state">Offline</string>
 </resources>
