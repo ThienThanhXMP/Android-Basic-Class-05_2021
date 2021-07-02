@@ -21,10 +21,31 @@
                 android:defaultValue="false"
                 app:argType="boolean"/>
         </action>
+        <action
+            android:id="@+id/startAnnounce"
+            app:destination="@id/announce_fragment">
+            <argument
+                android:name="gitAnnounce"
+                android:defaultValue="no_internet"
+                app:argType="string"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/announce_fragment"
         android:name="com.thanhthienxmp.githubsearch.fragment.AnnounceFragment"
         android:label="Announce"
-        tools:layout="@layout/announce_fragment" />
+        tools:layout="@layout/announce_fragment">
+        <action
+            android:id="@+id/startProfile"
+            app:destination="@id/profile_fragment">
+            <argument
+                android:name="gitAccount"
+                android:defaultValue="toanmobile"
+                app:argType="string"/>
+            <argument
+                android:name="checkStack"
+                android:defaultValue="false"
+                app:argType="boolean"/>
+        </action>
+    </fragment>
 </navigation>

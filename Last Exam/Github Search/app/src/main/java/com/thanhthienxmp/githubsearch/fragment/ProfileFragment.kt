@@ -2,11 +2,13 @@ package com.thanhthienxmp.githubsearch.fragment
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -90,7 +92,15 @@ class ProfileFragment : Fragment() {
         // Use retrofit and coroutine to set UI
         gitViewModel.apply {
             getAccount(gitAccount) {
-                setInfoUI(it)
+                if (it != null && it.login.isNotEmpty()) {
+                    Log.e("TEST1", it.login)
+                    setInfoUI(it)
+                } else {
+                    Log.e("TEST2", "TEST2")
+                    view.findNavController().navigate(
+                        ProfileFragmentDirections.startAnnounce("no_result")
+                    )
+                }
             }
             getGitFollowAccount(
                 gitAccount
@@ -109,21 +119,21 @@ class ProfileFragment : Fragment() {
         bindingRoot = null
     }
 
-    private fun setInfoUI(git: GithubAccount?) {
+    private fun setInfoUI(git: GithubAccount) {
         val info = binding.info
-        info.userName.text = git?.name
-        info.userLogin.text = "@".plus(git?.loginBias)
+        info.userName.text = git.name
+        info.userLogin.text = "@".plus(git.loginBias)
         info.userLogin.setOnClickListener {
-            git?.loginBias?.let { (context as MainActivity).copyTextToClipboard(it) }
+            git.loginBias.let { (context as MainActivity).copyTextToClipboard(it) }
         }
-        info.userBio.text = git?.bio ?: "Bio Github Search"
-        Glide.with(this@ProfileFragment).load(git?.avatar_url)
+        info.userBio.text = git.bio ?: "Bio Github Search"
+        Glide.with(this@ProfileFragment).load(git.avatar_url)
             .into(info.userAvatar)
         info.userFollowers.text =
-            getFollowNumber(git?.followers).plus(" Followers")
+            getFollowNumber(git.followers).plus(" Followers")
         info.userFollowing.text =
-            getFollowNumber(git?.following).plus(" Following")
-        info.userRepos.text = git?.public_repos.toString().plus(" Repos")
+            getFollowNumber(git.following).plus(" Following")
+        info.userRepos.text = git.public_repos.toString().plus(" Repos")
     }
 
     private fun getFollowNumber(number: Int?): String {

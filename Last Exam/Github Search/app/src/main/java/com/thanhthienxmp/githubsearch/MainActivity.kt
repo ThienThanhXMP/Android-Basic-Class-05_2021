@@ -3,7 +3,6 @@ package com.thanhthienxmp.githubsearch
 import android.content.*
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -42,6 +41,13 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
 
         // Github Search
         val gitEditText = binding.gitEditText
+
+        // Reset text on click on
+        gitEditText.setOnClickListener{
+            gitEditText.text = null
+        }
+
+        // Event in search keyboard button
         gitEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH)
                 gitEditText.text?.let {
@@ -53,6 +59,8 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
                 }
             false
         }
+
+        // Event in search button
         binding.gitSearchBtn.setOnClickListener {
             gitEditText.onEditorAction(EditorInfo.IME_ACTION_SEARCH)
             gitEditText.text?.let {
@@ -68,14 +76,18 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
         networkConnection = NetworkConnection(applicationContext)
         networkConnection.observe(this, {
             runOnUiThread {
-                if(it){
+                if (it) {
                     binding.toolbarContainer.connectStateIcon.setImageResource(R.drawable.ic_online_state)
                     binding.toolbarContainer.connectStateText.text =
                         resources.getText(R.string.network_online_state)
-                }else{
+                } else {
                     binding.toolbarContainer.connectStateIcon.setImageResource(R.drawable.ic_offline_state)
                     binding.toolbarContainer.connectStateText.text =
                         resources.getText(R.string.network_offline_state)
+                    navController.navigate(
+                        ProfileFragmentDirections.startAnnounce("no_internet")
+                    )
+                    getBackButton(init = false, stack = true)
                 }
             }
         })
@@ -87,6 +99,7 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
         getBackButton(init = false, stack = false)
     }
 
+    // Back button in toolbar
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -98,6 +111,7 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
         }
     }
 
+    // Navigation initialize
     override fun onSupportNavigateUp(): Boolean =
         navController.navigateUp() || super.onSupportNavigateUp()
 
@@ -113,12 +127,14 @@ class MainActivity : AppCompatActivity(), GithubAccountAction {
         }
     }
 
+    // Show back button
     private fun getBackButton(init: Boolean, stack: Boolean) {
         isStacked = !init && stack
         supportActionBar?.setDisplayShowHomeEnabled(isStacked)
         supportActionBar?.setDisplayHomeAsUpEnabled(isStacked)
     }
 
+    // Copy in clipboard
     fun copyTextToClipboard(text: String) {
         val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("gitCopy", text)

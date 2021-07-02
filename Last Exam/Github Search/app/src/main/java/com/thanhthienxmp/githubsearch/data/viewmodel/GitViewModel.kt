@@ -44,12 +44,12 @@ class GitViewModel(context: Context, private val db: GithubAccountDao) : ViewMod
                     }
                 }
             }
-            git?.let {
-                if (isUpdate) db.insertGit(it)
-                withContext(Dispatchers.Main) {
-                    returnGit(it)
-                }
+
+            if (isUpdate) git?.let { db.insertGit(it) }
+            withContext(Dispatchers.Main) {
+                returnGit(git)
             }
+
         }
     }
 
