@@ -2,4 +2,16 @@
     <string name="app_name">Github Search</string>
     <string name="network_online_state">Online</string>
     <string name="network_offline_state">Offline</string>
+    <string name="type_account_to_search">Type account to search</string>
+    <string name="git_search_button">gitSearchBtn</string>
+    <string name="git_name">Huỳnh Văn Toàn</string>
+    <string name="git_login">\@ToanMobile</string>
+    <string name="git_bio">Bio Github Search</string>
+    <string name="git_follow">38 Followers</string>
+    <string name="git_following">34 Following</string>
+    <string name="git_repo">53 Repos</string>
+    <string name="git_follow_title">Followers</string>
+    <string name="git_following_title">Following</string>
+    <string name="none_followers">None Followers</string>
+    <string name="none_following">None Following</string>
 </resources>

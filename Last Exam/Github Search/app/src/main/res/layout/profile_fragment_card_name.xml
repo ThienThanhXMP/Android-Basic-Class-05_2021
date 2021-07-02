@@ -7,10 +7,10 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/user_avatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_16"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toStartOf="@id/part_user_info"
@@ -33,16 +33,16 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Huỳnh Văn Toàn"
-            android:textSize="16sp"
+            android:text="@string/git_name"
+            android:textSize="@dimen/sp_16"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/user_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="\@ToanMobile"
-            android:textSize="18sp" />
+            android:text="@string/git_login"
+            android:textSize="@dimen/sp_18" />
 
         <TextView
             android:id="@+id/user_bio"
@@ -50,8 +50,8 @@
             android:scrollbars="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bio Github Search"
-            android:textSize="14sp" />
+            android:text="@string/git_bio"
+            android:textSize="@dimen/sp_14" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/part_user_follow"
@@ -63,8 +63,8 @@
                 android:id="@+id/user_followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="38 Followers"
-                android:textSize="12sp"
+                android:text="@string/git_follow"
+                android:textSize="@dimen/sp_12"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -74,8 +74,8 @@
                 android:id="@+id/user_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="34 Following"
-                android:textSize="12sp"
+                android:text="@string/git_following"
+                android:textSize="@dimen/sp_12"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/user_repos"
@@ -88,8 +88,8 @@
                 android:id="@+id/user_repos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="53 Repos"
-                android:textSize="12sp"
+                android:text="@string/git_repo"
+                android:textSize="@dimen/sp_12"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +103,7 @@
             android:orientation="vertical"
             app:constraint_referenced_ids="user_name,user_login,user_bio, part_user_follow"
             app:flow_horizontalAlign="start"
-            app:flow_verticalGap="4dp"
+            app:flow_verticalGap="@dimen/dp_4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

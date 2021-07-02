@@ -17,8 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_16"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_online_state" />
 
@@ -30,6 +30,6 @@
         android:gravity="center"
         android:text="@string/network_online_state"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="@dimen/sp_16"
         android:textStyle="bold" />
 </androidx.appcompat.widget.Toolbar>

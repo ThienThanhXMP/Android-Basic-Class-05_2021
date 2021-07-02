@@ -34,6 +34,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = bindingRoot!!
 
     private var gitAccount: String = "toanmobile"
+    private val gitAnnouceNoResult: String = "no_result"
     // private val githubApi: GithubApi = GithubApiService.getService
 
     private lateinit var followerRcy: RecyclerViewEmptySupport
@@ -81,6 +82,8 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // ViewModel initialize
         val gitViewModel: GitViewModel by viewModels {
             GitViewModelFactory(
                 (context as MainActivity).application,
@@ -98,7 +101,7 @@ class ProfileFragment : Fragment() {
                 } else {
                     Log.e("TEST2", "TEST2")
                     view.findNavController().navigate(
-                        ProfileFragmentDirections.startAnnounce("no_result")
+                        ProfileFragmentDirections.startAnnounce(gitAnnouceNoResult)
                     )
                 }
             }

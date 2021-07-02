@@ -8,21 +8,21 @@
     <TextView
         android:id="@+id/follower_title"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="@dimen/dp_32"
         android:background="@drawable/border_top_bottom"
         android:gravity="center"
-        android:text="Followers"
+        android:text="@string/git_follow_title"
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/following_title"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="@dimen/dp_32"
         android:background="@drawable/border_top_bottom"
         android:gravity="center"
-        android:text="Following"
-        android:textSize="16sp"
+        android:text="@string/git_following_title"
+        android:textSize="@dimen/sp_16"
         android:textStyle="bold" />
 
     <com.thanhthienxmp.githubsearch.widget.RecyclerViewEmptySupport
@@ -49,8 +49,8 @@
         tools:ignore="MissingConstraints,UseCompoundDrawables">
         <ImageView
             android:id="@+id/follower_empty_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
             android:alpha=".6"
             android:contentDescription="@string/app_name"
             android:src="@android:drawable/ic_menu_compass" />
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha=".6"
-            android:text="None Followers" />
+            android:text="@string/none_followers" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,8 +71,8 @@
         tools:ignore="UseCompoundDrawables">
         <ImageView
             android:id="@+id/following_empty_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
             android:alpha=".6"
             android:contentDescription="@string/app_name"
             android:src="@android:drawable/ic_menu_sort_by_size" />
@@ -82,12 +82,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha=".6"
-            android:text="None Following" />
+            android:text="@string/none_following" />
     </LinearLayout>
 
 
     <View
-        android:layout_width="2dp"
+        android:layout_width="@dimen/dp_2"
         android:layout_height="0dp"
         android:background="@drawable/single_line_vertical"
         app:layout_constraintStart_toEndOf="@id/follower"
